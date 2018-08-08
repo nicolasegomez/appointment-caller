@@ -2,11 +2,15 @@ package com.escribehost.appointmentcaller.api;
 
 import com.escribehost.appointmentcaller.phone.PhoneCaller;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/call")
+import java.util.Map;
+
+@RestController
+@RequestMapping("/call")
 public class TwilioCallController {
     private PhoneCaller phoneCaller;
 
@@ -15,18 +19,15 @@ public class TwilioCallController {
         this.phoneCaller = phoneCaller;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public void index() {
-        phoneCaller.getWelcomeDialog();
+    @PostMapping(produces = "application/xml")
+    public String index(@RequestParam Map<String, String> params) {
+        System.out.println("params1: "+params.toString());
+        return phoneCaller.getWelcomeDialog().toXml();
     }
 
-    @RequestMapping(value = "/confirm", method = RequestMethod.POST)
-    public void confirm() {
-        phoneCaller.getConfirmDialog();
-    }
-
-    @RequestMapping(value = "/reschedule", method = RequestMethod.POST)
-    public void reschedule() {
-        phoneCaller.getRescheduleDialog();
+    @PostMapping(value = "/patient-response", produces = "application/xml")
+    public String confirm(@RequestParam("Digits") String digits, @RequestParam Map<String, String> params) {
+        System.out.println("params 2: "+params.toString());
+        return phoneCaller.handleResponse(digits).toXml();
     }
 }
