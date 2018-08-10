@@ -16,13 +16,13 @@ public class AppointmentsCallController {
         this.appointmentJobCreator = appointmentJobCreator;
     }
 
-    @RequestMapping(value = "/confirm-call", method = RequestMethod.POST)
-    public void confirmCall() {
-        appointmentJobCreator.createConfirmCallJobs();
+    @RequestMapping(value = "/confirmation-calls", method = RequestMethod.POST)
+    public void confirmationCalls() {
+        appointmentJobCreator.createConfirmationCallJobs();
     }
 
-    @RequestMapping(value = "/reschedule-call", method = RequestMethod.POST)
-    public void rescheduleCall() {
+    @RequestMapping(value = "/reschedule-calls", method = RequestMethod.POST)
+    public void rescheduleCalls() {
         appointmentJobCreator.createRescheduleCallJobs();
     }
 

@@ -20,14 +20,12 @@ public class TwilioCallController {
     }
 
     @PostMapping(produces = "application/xml")
-    public String index(@RequestParam Map<String, String> params) {
-        System.out.println("params1: "+params.toString());
-        return phoneCaller.getWelcomeDialog().toXml();
+    public String index(@RequestParam("CallSid") String callSid) {
+        return phoneCaller.getWelcomeDialog(callSid).toXml();
     }
 
     @PostMapping(value = "/patient-response", produces = "application/xml")
-    public String confirm(@RequestParam("Digits") String digits, @RequestParam Map<String, String> params) {
-        System.out.println("params 2: "+params.toString());
-        return phoneCaller.handleResponse(digits).toXml();
+    public String confirm(@RequestParam("CallSid") String callSid,@RequestParam("Digits") String digits) {
+        return phoneCaller.handleResponse(callSid,digits).toXml();
     }
 }

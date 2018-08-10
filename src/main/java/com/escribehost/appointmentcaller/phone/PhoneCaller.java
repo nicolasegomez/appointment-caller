@@ -5,9 +5,12 @@ import com.twilio.twiml.TwiML;
 import java.net.URISyntaxException;
 
 public interface PhoneCaller {
-    void call() throws URISyntaxException;
 
-    TwiML getWelcomeDialog();
+    void call(CallData callData) throws URISyntaxException;
 
-    TwiML handleResponse(String digits);
+    TwiML getWelcomeDialog(String callSid);
+
+    TwiML handleResponse(String callSid,String digits);
+
+    String getCallMessage(CallData call);
 }

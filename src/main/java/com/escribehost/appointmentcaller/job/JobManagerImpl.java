@@ -1,5 +1,6 @@
 package com.escribehost.appointmentcaller.job;
 
+import com.escribehost.appointmentcaller.phone.CallData;
 import com.escribehost.appointmentcaller.phone.PhoneCaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,9 +15,14 @@ public class JobManagerImpl implements JobManager {
     }
 
     @Override
-    public void addJob() {
-
+    public void addJob(CallData callData) {
+        try {
+            phoneCaller.call(callData);
+        } catch (Exception ex) {
+            //TODO: ver esto
+        }
     }
+
 
     //TODO: we need a worker to execute jobs
 }
