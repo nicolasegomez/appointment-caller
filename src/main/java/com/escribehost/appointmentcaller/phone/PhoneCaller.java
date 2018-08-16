@@ -10,7 +10,7 @@ public interface PhoneCaller {
 
     TwiML getWelcomeDialog(String callSid);
 
-    TwiML handleResponse(String callSid,String digits);
+    TwiML handleResponse(String callSid, String digits);
 
-    String getCallMessage(CallData call);
+    String getCallMessage(CallData call, String templateFileName);
 }

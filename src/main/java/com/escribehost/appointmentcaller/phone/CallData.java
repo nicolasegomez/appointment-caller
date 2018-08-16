@@ -11,6 +11,7 @@ public class CallData {
     private String hospitalName;
     private String personToCall;
     private Date appointmentDate;
+    private int priority;
 
     public String getAppointmentId() {
         return appointmentId;
@@ -81,6 +82,15 @@ public class CallData {
 
     public CallData setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
+        return this;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public CallData setPriority(int priority) {
+        this.priority = priority;
         return this;
     }
 }
