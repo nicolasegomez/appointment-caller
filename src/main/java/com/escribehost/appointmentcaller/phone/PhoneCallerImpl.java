@@ -19,12 +19,17 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class PhoneCallerImpl implements PhoneCaller {
 
     private static final Logger logger = LoggerFactory.getLogger(PhoneCallerImpl.class);
+    private static final List<Call.Status> endStatuses = Arrays.asList(Call.Status.BUSY,
+            Call.Status.COMPLETED, Call.Status.CANCELED, Call.Status.FAILED, Call.Status.NO_ANSWER);
+
     @Value("${twilio.account.sid}")
     public String twilioAccountSid;
     @Value("${twilio.auth.token}")
@@ -58,6 +63,8 @@ public class PhoneCallerImpl implements PhoneCaller {
 
         Call call = Call
                 .creator(new PhoneNumber(to), new PhoneNumber(twilioPhoneFrom), new URI(phoneCallerApiUrl + "/call"))
+                .setStatusCallback(new URI(phoneCallerApiUrl + "/call/status"))
+                .setRecord(true)
                 .create();
 
         currentCalls.put(call.getSid(), callData);
@@ -81,6 +88,11 @@ public class PhoneCallerImpl implements PhoneCaller {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         template.render(model, stream);
         return stream.toString();
+    }
+
+    @Override
+    public void removeCall(CallData callData) {
+        currentCalls.remove(callData);
     }
 
     @Override
@@ -118,11 +130,13 @@ public class PhoneCallerImpl implements PhoneCaller {
             if (digits != null) {
                 switch (digits) {
                     case "1":
+                        call.setUserResponse(Integer.parseInt(digits));
                         builder.say(new Say.Builder(getCallMessage(call, "templates/confirm.twig")).build());
                         currentCalls.remove(callSid);
                         logger.info("Patient confirmed appointment. SId:{}, AppointmentId:{}", callSid, call.getAppointmentId());
                         break;
                     case "2":
+                        call.setUserResponse(Integer.parseInt(digits));
                         builder.say(new Say.Builder(getCallMessage(call, "templates/cancel.twig")).build());
                         builder.dial(new Dial.Builder(supportPhone).build());
                         currentCalls.remove(callSid);
@@ -150,4 +164,16 @@ public class PhoneCallerImpl implements PhoneCaller {
         }
     }
 
+    @Override
+    public void handleStatus(String callSid, Call.Status callStatus, String called) {
+        logger.info("Call status SId: {}, status: {}, calledTo:{}", callSid, callStatus, called);
+
+        if (endStatuses.contains(callStatus)) {
+            CallData call = currentCalls.get(callSid);
+            if (call != null)
+                call.callEnd(callStatus);
+            else
+                logger.error("Can't handle call status because the Call doesn't exists. SId:{}", callSid);
+        }
+    }
 }

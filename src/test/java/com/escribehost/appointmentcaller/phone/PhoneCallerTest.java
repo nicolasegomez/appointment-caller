@@ -34,9 +34,11 @@ public class PhoneCallerTest {
         String message = phoneCaller.getCallMessage(
                 new CallData()
                         .setPhoneToCall("+5491130687450")
-                        .setAppointmentDate(new Date())
+                        .setAppointmentDate(DateTime.now().toDate())
                         .setHospitalName("Capital Cardiology Hospital")
-                        .setPatientName("Nicolas Gomez").setDoctor("Robert James"));
+                        .setPatientName("Nicolas Gomez")
+                        .setDoctor("Robert James"),
+                "templates/welcome.twig");
         System.out.println(message);
         Assert.assertNotEquals("", message);
     }
