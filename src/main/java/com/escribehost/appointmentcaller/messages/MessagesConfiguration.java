@@ -20,7 +20,7 @@ public class MessagesConfiguration {
     @Value("${rabbit.routing.key}")
     private String routingKey;
 
-    @Bean
+    /*@Bean
     Queue queue() {
         return new Queue(queueName, false);
     }
@@ -47,5 +47,5 @@ public class MessagesConfiguration {
     @Bean
     MessageListenerAdapter listenerAdapter(AppointmentReceiver receiver) {
         return new MessageListenerAdapter(receiver, "receiveMessage");
-    }
+    }*/
 }

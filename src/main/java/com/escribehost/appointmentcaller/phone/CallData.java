@@ -3,10 +3,11 @@ package com.escribehost.appointmentcaller.phone;
 import com.twilio.rest.api.v2010.account.Call;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
-public class CallData {
+public class CallData implements Serializable{
     @Value("${call.timeout}")
     private int timeoutCallData;
     @Value("${call.maxAttempts}")
