@@ -14,6 +14,7 @@ import org.jtwig.JtwigTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Component
+@Profile("!dev")
 public class PhoneCallerImpl implements PhoneCaller {
 
     private static final Logger logger = LoggerFactory.getLogger(PhoneCallerImpl.class);
@@ -40,7 +42,7 @@ public class PhoneCallerImpl implements PhoneCaller {
     public String phoneCallerApiUrl;
     @Value("${supportPhone}")
     public String supportPhone;
-    private HashMap<String, CallData> currentCalls;
+    protected HashMap<String, CallData> currentCalls;
 
     public PhoneCallerImpl() {
         currentCalls = new HashMap<String, CallData>();

@@ -1,4 +1,4 @@
-package com.escribehost.appointmentcaller.messages;
+package com.escribehost.appointmentcaller.broker;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -27,7 +27,7 @@ public class MessageTestConfiguration {
         RabbitTemplate template = new RabbitTemplate(connectionFactory());
         //The routing key is set to the name of the queue by the broker for the default exchange.
         template.setRoutingKey(this.routingKey);
-        //Where we will synchronously receive messages from
+        //Where we will synchronously receive broker from
         template.setQueue(this.appointmentQueueName);
         template.setExchange(this.topicExchangeName);
         return template;

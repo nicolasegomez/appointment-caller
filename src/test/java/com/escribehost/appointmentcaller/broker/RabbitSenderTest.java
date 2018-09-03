@@ -1,4 +1,4 @@
-package com.escribehost.appointmentcaller.messages;
+package com.escribehost.appointmentcaller.broker;
 
 import com.escribehost.appointmentcaller.phone.CallData;
 import org.joda.time.DateTime;
@@ -17,12 +17,16 @@ public class RabbitSenderTest {
 
     @Test
     public void sendMessageTest() {
-        CallData message = new CallData()
-                .setPhoneToCall("+5491130687450")
-                .setAppointmentDate(DateTime.now().toDate())
-                .setHospitalName("Capital Cardiology Hospital")
-                .setPatientName("Nicolas Gomez")
-                .setDoctor("Robert James");
-        template.convertAndSend(message);
+        for (int i=0;i<100;i++) {
+            CallData message = new CallData()
+                    .setPhoneToCall("+5491130687450")
+                    .setAppointmentDate(DateTime.now().toDate())
+                    .setHospitalName("Capital Cardiology Hospital")
+                    .setPatientName("Nicolas Gomez")
+                    .setDoctor("Robert James")
+                    .setAppointmentId(i+"");
+
+            template.convertAndSend(message);
+        }
     }
 }

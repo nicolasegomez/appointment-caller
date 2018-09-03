@@ -72,7 +72,7 @@ Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'ra
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:372)
 	... 40 common frames omitted
 
-2018-08-22 00:03:38.462 ERROR 16534 --- [main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@58d75e99] to prepare test instance [com.escribehost.appointmentcaller.messages.RabbitSenderTest@66f66866]
+2018-08-22 00:03:38.462 ERROR 16534 --- [main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@58d75e99] to prepare test instance [com.escribehost.appointmentcaller.broker.RabbitSenderTest@66f66866]
 
 java.lang.IllegalStateException: Failed to load ApplicationContext
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
@@ -207,7 +207,7 @@ Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'ra
 	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:372)
 	... 40 common frames omitted
 
-2018-08-22 00:04:27.030 ERROR 16543 --- [main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@4fb3ee4e] to prepare test instance [com.escribehost.appointmentcaller.messages.RabbitSenderTest@545f80bf]
+2018-08-22 00:04:27.030 ERROR 16543 --- [main] o.s.test.context.TestContextManager      : Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener@4fb3ee4e] to prepare test instance [com.escribehost.appointmentcaller.broker.RabbitSenderTest@545f80bf]
 
 java.lang.IllegalStateException: Failed to load ApplicationContext
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:125)
