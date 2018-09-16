@@ -24,23 +24,23 @@ public class RabbitBrokerProperties {
     @Value("${broker.appointment.reminder.dlq.ttl}")
     private Long appointmentReminderDlqMessageTtl;
 
-    @Value("${broker.appointment.reminder.dlq.ttl}")
-    private Long appointmentReminderStatusDlqMessageTtl;
-
     @Value("${broker.appointment.reminder.max.priority:2}")
     private Integer appointmentReminderMaxPriority;
-
-    @Value("${broker.appointment.reminder.status.max.concurrent.consumers}")
-    private Integer appointmentReminderStatusMaxConcurrentConsumers;
-
-    @Value("${broker.appointment.reminder.status.number.of.threads.in.executor.thread.pool}")
-    private Integer appointmentReminderStatusNumberOfThreadsInExecutorThreadPool;
 
     @Value("${broker.appointment.reminder.max.concurrent.consumers}")
     private Integer appointmentReminderMaxConcurrentConsumers;
 
     @Value("${broker.appointment.reminder.number.of.threads.in.executor.thread.pool}")
     private Integer appointmentReminderNumberOfThreadsInExecutorThreadPool;
+
+    @Value("${broker.appointment.reminder.status.dlq.ttl}")
+    private Long appointmentReminderStatusDlqMessageTtl;
+
+    @Value("${broker.appointment.reminder.status.max.concurrent.consumers}")
+    private Integer appointmentReminderStatusMaxConcurrentConsumers;
+
+    @Value("${broker.appointment.reminder.status.number.of.threads.in.executor.thread.pool}")
+    private Integer appointmentReminderStatusNumberOfThreadsInExecutorThreadPool;
 
     @Value("${broker.appointment.reminder.prefetch.count:10}")
     private Integer appointmentReminderPrefetchCount;
