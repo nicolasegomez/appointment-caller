@@ -1,11 +1,12 @@
 package com.escribehost.appointmentcaller.broker;
 
-import com.escribehost.appointmentcaller.phone.CallData;
+import com.escribehost.appointmentcaller.model.AppointmentReminderCall;
 import com.escribehost.appointmentcaller.processor.AppointmentReminderProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import static com.escribehost.appointmentcaller.broker.MessagesConfiguration.APPOINTMENT_REMINDER_SUBSCRIBER_LISTENER;
 
 @Component
 public class AppointmentReceiver {
@@ -17,9 +18,10 @@ public class AppointmentReceiver {
         this.appointmentReminderProcessor = appointmentReminderProcessor;
     }
 
-    @RabbitListener(queues = "${rabbit.queue.name}")
-    public void receiveMessage(CallData message) {
-        logger.info("Receiving message from rabbit: {}", message.getHospitalName());
+    @RabbitListener(id = APPOINTMENT_REMINDER_SUBSCRIBER_LISTENER,
+            containerFactory = "appointmentReminderSubscriberContainerFactory", queues = "#{appointmentReminderQueue}")
+    public void receiveMessage(AppointmentReminderCall message) {
+        logger.info("Receiving message from rabbit, appointmentReminderId: {}", message.getAppointmentReminderId());
         appointmentReminderProcessor.processMessage(message);
     }
 

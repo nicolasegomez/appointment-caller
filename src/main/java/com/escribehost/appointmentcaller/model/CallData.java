@@ -1,4 +1,4 @@
-package com.escribehost.appointmentcaller.phone;
+package com.escribehost.appointmentcaller.model;
 
 import com.twilio.rest.api.v2010.account.Call;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,32 +7,30 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
 
-public class CallData implements Serializable{
-    @Value("${call.timeout}")
+public class CallData implements Serializable {
+    @Value("${call.timeout:10000}")
     private int timeoutCallData;
-    @Value("${call.maxAttempts}")
-    private int maxAttempts;
 
-    private String appointmentId;
+    private Long appointmentId;
     private String phoneToCall;
     private String patientName;
     private String room;
-    private String doctor;
-    private String hospitalName;
-    private String personToCall;
+    private String provider;
+    private String locationName;
     private Date appointmentDate;
-    private int priority;
-    private int attempts = 0;
+    private Integer appointmentStartTime;
+    private AppointmentReminderType type;
+
     private boolean callFinished = false;
 
     private Call.Status callEndStatus;
     private Integer userResponse = null;
 
-    public String getAppointmentId() {
+    public Long getAppointmentId() {
         return appointmentId;
     }
 
-    public CallData setAppointmentId(String appointmentId) {
+    public CallData setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
         return this;
     }
@@ -64,30 +62,21 @@ public class CallData implements Serializable{
         return this;
     }
 
-    public String getDoctor() {
-        return doctor;
+    public String getProvider() {
+        return provider;
     }
 
-    public CallData setDoctor(String doctor) {
-        this.doctor = doctor;
+    public CallData setProvider(String provider) {
+        this.provider = provider;
         return this;
     }
 
-    public String getHospitalName() {
-        return hospitalName;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public CallData setHospitalName(String hospitalName) {
-        this.hospitalName = hospitalName;
-        return this;
-    }
-
-    public String getPersonToCall() {
-        return personToCall;
-    }
-
-    public CallData setPersonToCall(String personToCall) {
-        this.personToCall = personToCall;
+    public CallData setLocationName(String locationName) {
+        this.locationName = locationName;
         return this;
     }
 
@@ -100,15 +89,6 @@ public class CallData implements Serializable{
         return this;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public CallData setPriority(int priority) {
-        this.priority = priority;
-        return this;
-    }
-
     public Optional<Call.Status> getCallEndStatus() {
         return Optional.ofNullable(callEndStatus);
     }
@@ -118,8 +98,22 @@ public class CallData implements Serializable{
         return this;
     }
 
-    public int getAttempts() {
-        return attempts;
+    public Integer getAppointmentStartTime() {
+        return appointmentStartTime;
+    }
+
+    public CallData setAppointmentStartTime(Integer appointmentStartTime) {
+        this.appointmentStartTime = appointmentStartTime;
+        return this;
+    }
+
+    public AppointmentReminderType getType() {
+        return type;
+    }
+
+    public CallData setType(AppointmentReminderType type) {
+        this.type = type;
+        return this;
     }
 
     public synchronized void waitUntilCallEnd() throws Exception {
@@ -132,7 +126,7 @@ public class CallData implements Serializable{
     }
 
     public synchronized void callEnd(Call.Status callStatus) {
-        this.attempts ++;
+
         this.callEndStatus = callStatus;
         callFinished = true;
         notify();
@@ -144,7 +138,4 @@ public class CallData implements Serializable{
                 && this.callEndStatus.equals(Call.Status.COMPLETED);
     }
 
-    public boolean isMaxAttemptsReached() {
-        return attempts >= maxAttempts;
-    }
 }

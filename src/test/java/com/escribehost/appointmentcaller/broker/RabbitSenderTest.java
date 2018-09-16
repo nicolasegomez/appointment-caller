@@ -1,7 +1,8 @@
 package com.escribehost.appointmentcaller.broker;
 
-import com.escribehost.appointmentcaller.phone.CallData;
+import com.escribehost.appointmentcaller.model.CallData;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,15 +17,16 @@ public class RabbitSenderTest {
     private RabbitTemplate template;
 
     @Test
+    @Ignore
     public void sendMessageTest() {
         for (int i=0;i<100;i++) {
             CallData message = new CallData()
                     .setPhoneToCall("+5491130687450")
                     .setAppointmentDate(DateTime.now().toDate())
-                    .setHospitalName("Capital Cardiology Hospital")
+                    .setLocationName("Capital Cardiology Hospital")
                     .setPatientName("Nicolas Gomez")
-                    .setDoctor("Robert James")
-                    .setAppointmentId(i+"");
+                    .setProvider("Robert James")
+                    .setAppointmentId(new Long(i));
 
             template.convertAndSend(message);
         }

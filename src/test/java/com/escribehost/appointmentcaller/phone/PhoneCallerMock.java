@@ -1,5 +1,6 @@
 package com.escribehost.appointmentcaller.phone;
 
+import com.escribehost.appointmentcaller.model.CallData;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.twiml.TwiML;
 import org.assertj.core.util.Lists;
@@ -35,12 +36,22 @@ public class PhoneCallerMock implements PhoneCaller {
     }
 
     @Override
-    public TwiML getWelcomeDialog(String callSid) {
+    public TwiML getReminderWelcomeDialog(String callSid) {
         return null;
     }
 
     @Override
-    public TwiML handleResponse(String callSid, String digits) {
+    public TwiML getCancellationWelcomeDialog(String callSid) {
+        return null;
+    }
+
+    @Override
+    public TwiML handleReminderResponse(String callSid, String digits) {
+        return null;
+    }
+
+    @Override
+    public TwiML handleCancellationResponse(String callSid, String digits) {
         return null;
     }
 

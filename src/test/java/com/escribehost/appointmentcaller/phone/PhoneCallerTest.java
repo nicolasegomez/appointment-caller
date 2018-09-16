@@ -1,5 +1,6 @@
 package com.escribehost.appointmentcaller.phone;
 
+import com.escribehost.appointmentcaller.model.CallData;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -24,9 +25,9 @@ public class PhoneCallerTest {
         phoneCaller.call(new CallData()
                 .setPhoneToCall("+5491130687450")
                 .setAppointmentDate(new Date())
-                .setHospitalName("Capital Cardiology Hospital")
+                .setLocationName("Capital Cardiology Hospital")
                 .setPatientName("Nicolas Gomez")
-                .setDoctor("Robert James"));
+                .setProvider("Robert James"));
     }
 
     @Test
@@ -35,10 +36,10 @@ public class PhoneCallerTest {
                 new CallData()
                         .setPhoneToCall("+5491130687450")
                         .setAppointmentDate(DateTime.now().toDate())
-                        .setHospitalName("Capital Cardiology Hospital")
+                        .setLocationName("Capital Cardiology Hospital")
                         .setPatientName("Nicolas Gomez")
-                        .setDoctor("Robert James"),
-                "templates/welcome.twig");
+                        .setProvider("Robert James"),
+                "templates/reminder-welcome.twig");
         System.out.println(message);
         Assert.assertNotEquals("", message);
     }
