@@ -21,14 +21,24 @@ public class TwilioCallController {
         this.phoneCaller = phoneCaller;
     }
 
-    @PostMapping(produces = "application/xml")
-    public String index(@RequestParam("CallSid") String callSid, @RequestParam Map<String, String> params) {
-        return phoneCaller.getWelcomeDialog(callSid).toXml();
+    @PostMapping(value = "/reminder", produces = "application/xml")
+    public String reminder(@RequestParam("CallSid") String callSid, @RequestParam Map<String, String> params) {
+        return phoneCaller.getReminderWelcomeDialog(callSid).toXml();
     }
 
-    @PostMapping(value = "/patient-response", produces = "application/xml")
-    public String confirm(@RequestParam("CallSid") String callSid, @RequestParam("Digits") String digits) {
-        return phoneCaller.handleResponse(callSid, digits).toXml();
+    @PostMapping(value = "/cancellation", produces = "application/xml")
+    public String cancellation(@RequestParam("CallSid") String callSid, @RequestParam Map<String, String> params) {
+        return phoneCaller.getCancellationWelcomeDialog(callSid).toXml();
+    }
+
+    @PostMapping(value = "/reminder/patient-response", produces = "application/xml")
+    public String responseReminder(@RequestParam("CallSid") String callSid, @RequestParam("Digits") String digits) {
+        return phoneCaller.handleReminderResponse(callSid, digits).toXml();
+    }
+
+    @PostMapping(value = "/cancellation/patient-response", produces = "application/xml")
+    public String responseCancellation(@RequestParam("CallSid") String callSid, @RequestParam("Digits") String digits) {
+        return phoneCaller.handleCancellationResponse(callSid, digits).toXml();
     }
 
     @PostMapping(value = "/status")
