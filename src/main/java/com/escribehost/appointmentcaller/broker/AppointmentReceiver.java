@@ -1,6 +1,6 @@
 package com.escribehost.appointmentcaller.broker;
 
-import com.escribehost.appointmentcaller.model.AppointmentReminderCall;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderCallDto;
 import com.escribehost.appointmentcaller.processor.AppointmentReminderProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class AppointmentReceiver {
 
     @RabbitListener(id = APPOINTMENT_REMINDER_SUBSCRIBER_LISTENER,
             containerFactory = "appointmentReminderSubscriberContainerFactory", queues = "#{appointmentReminderQueue}")
-    public void receiveMessage(AppointmentReminderCall message) {
+    public void receiveMessage(AppointmentReminderCallDto message) {
         logger.info("Receiving message from rabbit, appointmentReminderId: {}", message.getAppointmentReminderId());
         appointmentReminderProcessor.processMessage(message);
     }

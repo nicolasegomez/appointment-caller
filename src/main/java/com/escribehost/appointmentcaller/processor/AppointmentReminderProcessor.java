@@ -1,8 +1,8 @@
 package com.escribehost.appointmentcaller.processor;
 
 import com.escribehost.appointmentcaller.broker.AppointmentReminderStatusPublisher;
-import com.escribehost.appointmentcaller.model.AppointmentReminderCall;
-import com.escribehost.appointmentcaller.model.AppointmentReminderStatus;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderCallDto;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
 import com.escribehost.appointmentcaller.model.CallData;
 import com.escribehost.appointmentcaller.phone.PhoneCaller;
 import org.slf4j.Logger;
@@ -24,7 +24,7 @@ public class AppointmentReminderProcessor {
         this.appointmentReminderStatusPublisher = appointmentReminderStatusPublisher;
     }
 
-    public void processMessage(AppointmentReminderCall message) {
+    public void processMessage(AppointmentReminderCallDto message) {
         if (message != null) {
             try {
 
@@ -53,9 +53,9 @@ public class AppointmentReminderProcessor {
         }
     }
 
-    public void handleEndedCall(AppointmentReminderCall appointmentReminderCall, AppointmentReminderStatus status) {
-        logger.info("Publishing appointment reminder status response. AppointmentReminderId: {}, status: {}", appointmentReminderCall.getAppointmentReminderId(), status);
-        appointmentReminderCall.setStatus(status);
-        appointmentReminderStatusPublisher.publish(appointmentReminderCall);
+    public void handleEndedCall(AppointmentReminderCallDto appointmentReminderCallDto, AppointmentReminderStatus status) {
+        logger.info("Publishing appointment reminder status response. AppointmentReminderId: {}, status: {}", appointmentReminderCallDto.getAppointmentReminderId(), status);
+        appointmentReminderCallDto.setStatus(status);
+        appointmentReminderStatusPublisher.publish(appointmentReminderCallDto);
     }
 }

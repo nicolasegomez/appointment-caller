@@ -1,5 +1,6 @@
 package com.escribehost.appointmentcaller.model;
 
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.twilio.rest.api.v2010.account.Call;
 import org.springframework.beans.factory.annotation.Value;
 

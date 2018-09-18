@@ -1,6 +1,6 @@
 package com.escribehost.appointmentcaller.phone;
 
-import com.escribehost.appointmentcaller.model.AppointmentReminderType;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.escribehost.appointmentcaller.model.CallData;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;

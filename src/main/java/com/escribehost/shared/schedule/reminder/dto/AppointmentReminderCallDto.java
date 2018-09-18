@@ -1,10 +1,12 @@
-package com.escribehost.appointmentcaller.model;
+package com.escribehost.shared.schedule.reminder.dto;
 
-public class AppointmentReminderCall {
+public class AppointmentReminderCallDto {
     private Long appointmentReminderId;
     private Long appointmentId;
     private AppointmentReminderStatus status;
     private String phone;
+    private Long providerId;
+    private Long roomId;
     private String location;
     private String room;
     private String patientFirstName;
@@ -20,7 +22,7 @@ public class AppointmentReminderCall {
         return appointmentReminderId;
     }
 
-    public AppointmentReminderCall setAppointmentReminderId(Long appointmentReminderId) {
+    public AppointmentReminderCallDto setAppointmentReminderId(Long appointmentReminderId) {
         this.appointmentReminderId = appointmentReminderId;
         return this;
     }
@@ -29,7 +31,7 @@ public class AppointmentReminderCall {
         return appointmentId;
     }
 
-    public AppointmentReminderCall setAppointmentId(Long appointmentId) {
+    public AppointmentReminderCallDto setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
         return this;
     }
@@ -38,7 +40,7 @@ public class AppointmentReminderCall {
         return status;
     }
 
-    public AppointmentReminderCall setStatus(AppointmentReminderStatus status) {
+    public AppointmentReminderCallDto setStatus(AppointmentReminderStatus status) {
         this.status = status;
         return this;
     }
@@ -47,8 +49,26 @@ public class AppointmentReminderCall {
         return phone;
     }
 
-    public AppointmentReminderCall setPhone(String phone) {
+    public AppointmentReminderCallDto setPhone(String phone) {
         this.phone = phone;
+        return this;
+    }
+
+    public Long getProviderId() {
+        return providerId;
+    }
+
+    public AppointmentReminderCallDto setProviderId(Long providerId) {
+        this.providerId = providerId;
+        return this;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public AppointmentReminderCallDto setRoomId(Long roomId) {
+        this.roomId = roomId;
         return this;
     }
 
@@ -56,7 +76,7 @@ public class AppointmentReminderCall {
         return location;
     }
 
-    public AppointmentReminderCall setLocation(String location) {
+    public AppointmentReminderCallDto setLocation(String location) {
         this.location = location;
         return this;
     }
@@ -65,7 +85,7 @@ public class AppointmentReminderCall {
         return room;
     }
 
-    public AppointmentReminderCall setRoom(String room) {
+    public AppointmentReminderCallDto setRoom(String room) {
         this.room = room;
         return this;
     }
@@ -74,7 +94,7 @@ public class AppointmentReminderCall {
         return patientFirstName;
     }
 
-    public AppointmentReminderCall setPatientFirstName(String patientFirstName) {
+    public AppointmentReminderCallDto setPatientFirstName(String patientFirstName) {
         this.patientFirstName = patientFirstName;
         return this;
     }
@@ -83,7 +103,7 @@ public class AppointmentReminderCall {
         return patientLastName;
     }
 
-    public AppointmentReminderCall setPatientLastName(String patientLastName) {
+    public AppointmentReminderCallDto setPatientLastName(String patientLastName) {
         this.patientLastName = patientLastName;
         return this;
     }
@@ -92,7 +112,7 @@ public class AppointmentReminderCall {
         return appointmentDate;
     }
 
-    public AppointmentReminderCall setAppointmentDate(String appointmentDate) {
+    public AppointmentReminderCallDto setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
         return this;
     }
@@ -101,7 +121,7 @@ public class AppointmentReminderCall {
         return appointmentStartTime;
     }
 
-    public AppointmentReminderCall setAppointmentStartTime(Integer appointmentStartTime) {
+    public AppointmentReminderCallDto setAppointmentStartTime(Integer appointmentStartTime) {
         this.appointmentStartTime = appointmentStartTime;
         return this;
     }
@@ -110,7 +130,7 @@ public class AppointmentReminderCall {
         return providerFirstName;
     }
 
-    public AppointmentReminderCall setProviderFirstName(String providerFirstName) {
+    public AppointmentReminderCallDto setProviderFirstName(String providerFirstName) {
         this.providerFirstName = providerFirstName;
         return this;
     }
@@ -119,7 +139,7 @@ public class AppointmentReminderCall {
         return providerMiddleName;
     }
 
-    public AppointmentReminderCall setProviderMiddleName(String providerMiddleName) {
+    public AppointmentReminderCallDto setProviderMiddleName(String providerMiddleName) {
         this.providerMiddleName = providerMiddleName;
         return this;
     }
@@ -128,7 +148,7 @@ public class AppointmentReminderCall {
         return providerLastName;
     }
 
-    public AppointmentReminderCall setProviderLastName(String providerLastName) {
+    public AppointmentReminderCallDto setProviderLastName(String providerLastName) {
         this.providerLastName = providerLastName;
         return this;
     }
@@ -137,7 +157,7 @@ public class AppointmentReminderCall {
         return type;
     }
 
-    public AppointmentReminderCall setType(AppointmentReminderType type) {
+    public AppointmentReminderCallDto setType(AppointmentReminderType type) {
         this.type = type;
         return this;
     }

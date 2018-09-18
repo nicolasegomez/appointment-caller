@@ -1,6 +1,6 @@
 package com.escribehost.appointmentcaller.api;
 
-import com.escribehost.appointmentcaller.model.AppointmentReminderCall;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderCallDto;
 import com.escribehost.appointmentcaller.processor.AppointmentReminderProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ public class AppointmentsCallController {
     }
 
     @PostMapping("/")
-    public void processAppointmentReminder(@RequestBody AppointmentReminderCall appointmentReminderCall) {
-        appointmentReminderProcessor.processMessage(appointmentReminderCall);
+    public void processAppointmentReminder(@RequestBody AppointmentReminderCallDto appointmentReminderCallDto) {
+        appointmentReminderProcessor.processMessage(appointmentReminderCallDto);
     }
 
 }

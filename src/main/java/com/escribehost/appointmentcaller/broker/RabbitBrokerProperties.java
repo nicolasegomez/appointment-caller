@@ -42,7 +42,7 @@ public class RabbitBrokerProperties {
     @Value("${broker.appointment.reminder.status.number.of.threads.in.executor.thread.pool}")
     private Integer appointmentReminderStatusNumberOfThreadsInExecutorThreadPool;
 
-    @Value("${broker.appointment.reminder.prefetch.count:10}")
+    @Value("${broker.appointment.reminder.prefetch.count:1}")
     private Integer appointmentReminderPrefetchCount;
 
     public void setPrefix(String prefix) {

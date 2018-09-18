@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler;
 import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ErrorHandler;
@@ -42,7 +43,13 @@ public class MessagesConfiguration {
         factory.setErrorHandler(jobErrorHandler());
         factory.setDefaultRequeueRejected(false);
         factory.setPrefetchCount(rbp.getAppointmentReminderPrefetchCount());
+        factory.setMessageConverter(producerJackson2JsonMessageConverter());
         return factory;
+    }
+
+    @Bean
+    public Jackson2JsonMessageConverter producerJackson2JsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
     }
 
     @Bean
@@ -124,6 +131,7 @@ public class MessagesConfiguration {
         RabbitTemplate r = new RabbitTemplate(rabbitConnectionFactory);
         r.setExchange(rabbitBrokerProperties.getAppointmentReminderStatusExchange());
         r.setRoutingKey(rabbitBrokerProperties.getAppointmentReminderStatusRoutingKey());
+        r.setMessageConverter(producerJackson2JsonMessageConverter());
         return r;
     }
 
