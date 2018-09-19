@@ -43,18 +43,19 @@ public class AppointmentReminderProcessor {
                 callData.waitUntilCallEnd();
                 phoneCaller.removeCall(callData);
 
-                handleEndedCall(message, AppointmentReminderStatus.COMPLETED);
+                handleEndedCall(message, AppointmentReminderStatus.COMPLETED,callData.getCallId());
             } catch (Exception ex) {
                 logger.error("Call have failed. AppointmentId: {}, Error: {}", message.getAppointmentId(), ex);
-                handleEndedCall(message, AppointmentReminderStatus.FAILED);
+                handleEndedCall(message, AppointmentReminderStatus.FAILED,null);
             }
         } else {
             logger.error("Call have failed, appointment reminder call is null.");
         }
     }
 
-    public void handleEndedCall(AppointmentReminderCallDto appointmentReminderCallDto, AppointmentReminderStatus status) {
+    public void handleEndedCall(AppointmentReminderCallDto appointmentReminderCallDto, AppointmentReminderStatus status,String callId) {
         logger.info("Publishing appointment reminder status response. AppointmentReminderId: {}, status: {}", appointmentReminderCallDto.getAppointmentReminderId(), status);
+        appointmentReminderCallDto.setCallId(callId);
         appointmentReminderCallDto.setStatus(status);
         appointmentReminderStatusPublisher.publish(appointmentReminderCallDto);
     }

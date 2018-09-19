@@ -27,6 +27,9 @@ public class RabbitBrokerProperties {
     @Value("${broker.appointment.reminder.max.priority:2}")
     private Integer appointmentReminderMaxPriority;
 
+    @Value("${broker.appointment.reminder.concurrent.consumers}")
+    private Integer appointmentReminderConcurrentConsumers;
+
     @Value("${broker.appointment.reminder.max.concurrent.consumers}")
     private Integer appointmentReminderMaxConcurrentConsumers;
 
@@ -51,6 +54,10 @@ public class RabbitBrokerProperties {
 
     public Integer getAppointmentReminderMaxConcurrentConsumers() {
         return appointmentReminderStatusMaxConcurrentConsumers;
+    }
+
+    public Integer getAppointmentReminderConcurrentConsumers() {
+        return appointmentReminderConcurrentConsumers;
     }
 
     public Integer getAppointmentReminderNumberOfThreadsInExecutorThreadPool() {

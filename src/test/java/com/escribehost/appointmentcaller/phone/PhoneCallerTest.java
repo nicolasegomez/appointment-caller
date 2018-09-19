@@ -23,6 +23,7 @@ public class PhoneCallerTest {
     @Ignore
     public void callTest() throws URISyntaxException {
         phoneCaller.call(new CallData()
+                .setCallId("1")
                 .setPhoneToCall("+5491130687450")
                 .setAppointmentDate(new Date())
                 .setLocationName("Capital Cardiology Hospital")
@@ -34,6 +35,7 @@ public class PhoneCallerTest {
     public void getCallMessage() {
         String message = phoneCaller.getCallMessage(
                 new CallData()
+                        .setCallId("1")
                         .setPhoneToCall("+5491130687450")
                         .setAppointmentDate(DateTime.now().toDate())
                         .setLocationName("Capital Cardiology Hospital")

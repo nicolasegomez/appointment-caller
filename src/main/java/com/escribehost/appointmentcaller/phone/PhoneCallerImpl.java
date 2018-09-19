@@ -1,7 +1,7 @@
 package com.escribehost.appointmentcaller.phone;
 
-import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.escribehost.appointmentcaller.model.CallData;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.twiml.TwiML;
@@ -242,9 +242,9 @@ public class PhoneCallerImpl implements PhoneCaller {
 
         if (endStatuses.contains(callStatus)) {
             CallData call = currentCalls.get(callSid);
-            if (call != null)
-                call.callEnd(callStatus);
-            else
+            if (call != null) {
+                call.callEnd(callStatus,callSid);
+            } else
                 logger.error("Can't handle call status because the Call doesn't exists. SId:{}", callSid);
         }
     }

@@ -17,6 +17,7 @@ public class AppointmentReminderCallDto {
     private String providerMiddleName;
     private String providerLastName;
     private AppointmentReminderType type;
+    private String callId;
 
     public Long getAppointmentReminderId() {
         return appointmentReminderId;
@@ -159,6 +160,15 @@ public class AppointmentReminderCallDto {
 
     public AppointmentReminderCallDto setType(AppointmentReminderType type) {
         this.type = type;
+        return this;
+    }
+
+    public String getCallId() {
+        return callId;
+    }
+
+    public AppointmentReminderCallDto setCallId(String callId) {
+        this.callId = callId;
         return this;
     }
 }

@@ -40,6 +40,7 @@ public class MessagesConfiguration {
         factory.setConnectionFactory(rabbitConnectionFactory);
         factory.setTaskExecutor(appointmentReminderTaskExecutor(rbp));
         factory.setMaxConcurrentConsumers(rbp.getAppointmentReminderMaxConcurrentConsumers());
+        factory.setConcurrentConsumers(rbp.getAppointmentReminderConcurrentConsumers());
         factory.setErrorHandler(jobErrorHandler());
         factory.setDefaultRequeueRejected(false);
         factory.setPrefetchCount(rbp.getAppointmentReminderPrefetchCount());

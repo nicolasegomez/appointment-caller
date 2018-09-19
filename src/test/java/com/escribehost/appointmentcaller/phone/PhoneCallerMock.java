@@ -28,10 +28,10 @@ public class PhoneCallerMock implements PhoneCaller {
             e.printStackTrace();
         }
         if (this.failedAppointmentIds.contains(callData.getAppointmentId())) {
-            callData.callEnd(Call.Status.FAILED);
+            callData.callEnd(Call.Status.FAILED,"22");
         } else {
             callData.setUserResponse(1);
-            callData.callEnd(Call.Status.COMPLETED);
+            callData.callEnd(Call.Status.COMPLETED,"22");
         }
     }
 

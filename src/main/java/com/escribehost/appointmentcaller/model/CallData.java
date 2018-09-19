@@ -21,6 +21,7 @@ public class CallData implements Serializable {
     private Date appointmentDate;
     private Integer appointmentStartTime;
     private AppointmentReminderType type;
+    private String callId;
 
     private boolean callFinished = false;
 
@@ -117,6 +118,15 @@ public class CallData implements Serializable {
         return this;
     }
 
+    public String getCallId() {
+        return callId;
+    }
+
+    public CallData setCallId(String callId) {
+        this.callId = callId;
+        return this;
+    }
+
     public synchronized void waitUntilCallEnd() throws Exception {
         if (!callFinished) {
             wait(timeoutCallData);
@@ -126,8 +136,8 @@ public class CallData implements Serializable {
         }
     }
 
-    public synchronized void callEnd(Call.Status callStatus) {
-
+    public synchronized void callEnd(Call.Status callStatus, String callId) {
+        this.callId = callId;
         this.callEndStatus = callStatus;
         callFinished = true;
         notify();
