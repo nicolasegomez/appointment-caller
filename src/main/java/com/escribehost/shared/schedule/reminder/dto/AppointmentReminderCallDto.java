@@ -3,6 +3,7 @@ package com.escribehost.shared.schedule.reminder.dto;
 public class AppointmentReminderCallDto {
     private Long appointmentReminderId;
     private Long appointmentId;
+    private Long accountId;
     private AppointmentReminderStatus status;
     private String phone;
     private Long providerId;
@@ -34,6 +35,15 @@ public class AppointmentReminderCallDto {
 
     public AppointmentReminderCallDto setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
+        return this;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public AppointmentReminderCallDto setAccountId(Long accountId) {
+        this.accountId = accountId;
         return this;
     }
 

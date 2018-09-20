@@ -30,6 +30,7 @@ public class AppointmentReminderProcessor {
 
                 CallData callData = new CallData()
                         .setAppointmentId(message.getAppointmentId())
+                        .setAccountId(message.getAccountId())
                         .setAppointmentDate(new SimpleDateFormat("yyyy-MM-dd").parse(message.getAppointmentDate()))
                         .setProvider(message.getProviderFirstName() + " " + message.getProviderMiddleName() + " " + message.getProviderLastName())
                         .setPatientName(message.getPatientFirstName() + " " + message.getPatientLastName())

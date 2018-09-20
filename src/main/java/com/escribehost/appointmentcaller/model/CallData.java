@@ -13,6 +13,7 @@ public class CallData implements Serializable {
     private int timeoutCallData;
 
     private Long appointmentId;
+    private Long accountId;
     private String phoneToCall;
     private String patientName;
     private String room;
@@ -34,6 +35,15 @@ public class CallData implements Serializable {
 
     public CallData setAppointmentId(Long appointmentId) {
         this.appointmentId = appointmentId;
+        return this;
+    }
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public CallData setAccountId(Long accountId) {
+        this.accountId = accountId;
         return this;
     }
 
