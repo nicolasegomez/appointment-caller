@@ -34,19 +34,15 @@ public class PhoneCallerImpl implements PhoneCaller {
     private static final List<Call.Status> endStatuses = Arrays.asList(Call.Status.BUSY,
             Call.Status.COMPLETED, Call.Status.CANCELED, Call.Status.FAILED, Call.Status.NO_ANSWER);
 
-    @Value("${twilio.account.sid}")
-    public String twilioAccountSid;
-    @Value("${twilio.auth.token}")
-    public String twilioAuthToken;
-    @Value("${twilio.phone.from}")
-    public String twilioPhoneFrom;
     @Value("${phoneCallerApiUrl}")
     public String phoneCallerApiUrl;
     @Value("${supportPhone}")
     public String supportPhone;
     protected HashMap<String, CallData> currentCalls;
+    private TwilioConfig twilioConfig;
 
-    public PhoneCallerImpl() {
+    public PhoneCallerImpl(TwilioConfig twilioConfig) {
+        this.twilioConfig = twilioConfig;
         currentCalls = new HashMap<String, CallData>();
     }
 
@@ -61,7 +57,7 @@ public class PhoneCallerImpl implements PhoneCaller {
 
     @Override
     public void call(CallData callData) throws URISyntaxException {
-        Twilio.init(twilioAccountSid, twilioAuthToken);
+        Twilio.init(twilioConfig.getAccountSid(callData.getAccountId()), twilioConfig.getToken(callData.getAccountId()));
         String to = callData.getPhoneToCall();
         String callerApiUrlPath = "/call";
         if (callData.getType() == AppointmentReminderType.CONFIRMATION) {
@@ -71,7 +67,7 @@ public class PhoneCallerImpl implements PhoneCaller {
         }
 
         Call call = Call
-                .creator(new PhoneNumber(to), new PhoneNumber(twilioPhoneFrom), new URI(phoneCallerApiUrl + callerApiUrlPath))
+                .creator(new PhoneNumber(to), new PhoneNumber(twilioConfig.getPhoneFrom(callData.getAccountId())), new URI(phoneCallerApiUrl + callerApiUrlPath))
                 .setStatusCallback(new URI(phoneCallerApiUrl + "call/status"))
                 .setRecord(true)
                 .create();
@@ -243,7 +239,7 @@ public class PhoneCallerImpl implements PhoneCaller {
         if (endStatuses.contains(callStatus)) {
             CallData call = currentCalls.get(callSid);
             if (call != null) {
-                call.callEnd(callStatus,callSid);
+                call.callEnd(callStatus, callSid);
             } else
                 logger.error("Can't handle call status because the Call doesn't exists. SId:{}", callSid);
         }
