@@ -1,9 +1,8 @@
 package com.escribehost.appointmentcaller.model;
 
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
 import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
-import com.twilio.rest.api.v2010.account.Call;
 import org.springframework.beans.factory.annotation.Value;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
@@ -26,7 +25,7 @@ public class CallData implements Serializable {
 
     private boolean callFinished = false;
 
-    private Call.Status callEndStatus;
+    private AppointmentReminderStatus callEndStatus;
     private Integer userResponse = null;
 
     public Long getAppointmentId() {
@@ -101,7 +100,7 @@ public class CallData implements Serializable {
         return this;
     }
 
-    public Optional<Call.Status> getCallEndStatus() {
+    public Optional<AppointmentReminderStatus> getCallEndStatus() {
         return Optional.ofNullable(callEndStatus);
     }
 
@@ -146,17 +145,11 @@ public class CallData implements Serializable {
         }
     }
 
-    public synchronized void callEnd(Call.Status callStatus, String callId) {
+    public synchronized void callEnd(AppointmentReminderStatus callStatus, String callId) {
         this.callId = callId;
         this.callEndStatus = callStatus;
         callFinished = true;
         notify();
-    }
-
-    public boolean isSuccesfullyCompleted() {
-        return callFinished
-                && userResponse != null
-                && this.callEndStatus.equals(Call.Status.COMPLETED);
     }
 
 }

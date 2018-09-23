@@ -1,6 +1,9 @@
-package com.escribehost.appointmentcaller.phone;
+package com.escribehost.appointmentcaller.phone.twilio;
 
 import com.escribehost.appointmentcaller.model.CallData;
+import com.escribehost.appointmentcaller.phone.PhoneCaller;
+import com.escribehost.appointmentcaller.phone.PhoneNumberParser;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
 import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
@@ -29,9 +32,9 @@ import java.util.List;
 
 @Component
 @Profile("!dev")
-public class PhoneCallerImpl implements PhoneCaller {
+public class PhoneCallerTwilio implements PhoneCaller {
 
-    private static final Logger logger = LoggerFactory.getLogger(PhoneCallerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PhoneCallerTwilio.class);
     private static final List<Call.Status> endStatuses = Arrays.asList(Call.Status.BUSY,
             Call.Status.COMPLETED, Call.Status.CANCELED, Call.Status.FAILED, Call.Status.NO_ANSWER);
 
@@ -42,7 +45,7 @@ public class PhoneCallerImpl implements PhoneCaller {
     protected HashMap<String, CallData> currentCalls;
     private TwilioConfig twilioConfig;
 
-    public PhoneCallerImpl(TwilioConfig twilioConfig) {
+    public PhoneCallerTwilio(TwilioConfig twilioConfig) {
         this.twilioConfig = twilioConfig;
         currentCalls = new HashMap<String, CallData>();
     }
@@ -248,9 +251,26 @@ public class PhoneCallerImpl implements PhoneCaller {
         if (endStatuses.contains(callStatus)) {
             CallData call = currentCalls.get(callSid);
             if (call != null) {
-                call.callEnd(callStatus, callSid);
+                call.callEnd(getAppointmentReminderStatus(callStatus), callSid);
             } else
                 logger.error("Can't handle call status because the Call doesn't exists. SId:{}", callSid);
+        }
+    }
+
+    private AppointmentReminderStatus getAppointmentReminderStatus(Call.Status callStatus) {
+        switch (callStatus) {
+            case COMPLETED:
+                return AppointmentReminderStatus.COMPLETED;
+            case FAILED:
+                return AppointmentReminderStatus.FAILED;
+            case BUSY:
+                return AppointmentReminderStatus.BUSY;
+            case CANCELED:
+                return AppointmentReminderStatus.CANCELED;
+            case NO_ANSWER:
+                return AppointmentReminderStatus.NO_ANSWER;
+            default:
+                return AppointmentReminderStatus.FAILED;
         }
     }
 }

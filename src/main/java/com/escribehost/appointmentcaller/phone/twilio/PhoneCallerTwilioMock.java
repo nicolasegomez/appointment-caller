@@ -1,4 +1,4 @@
-package com.escribehost.appointmentcaller.phone;
+package com.escribehost.appointmentcaller.phone.twilio;
 
 import com.escribehost.appointmentcaller.model.CallData;
 import com.twilio.rest.api.v2010.account.Call;
@@ -14,11 +14,11 @@ import java.util.UUID;
 
 @Component
 @Profile("dev")
-public class PhoneCallerMockImpl extends PhoneCallerImpl {
+public class PhoneCallerTwilioMock extends PhoneCallerTwilio {
 
-    private static final Logger logger = LoggerFactory.getLogger(PhoneCallerMockImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PhoneCallerTwilioMock.class);
 
-    public PhoneCallerMockImpl(TwilioConfig twilioConfig) {
+    public PhoneCallerTwilioMock(TwilioConfig twilioConfig) {
         super(twilioConfig);
     }
 

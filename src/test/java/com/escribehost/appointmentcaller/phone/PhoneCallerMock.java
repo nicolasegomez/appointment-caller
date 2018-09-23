@@ -1,6 +1,7 @@
 package com.escribehost.appointmentcaller.phone;
 
 import com.escribehost.appointmentcaller.model.CallData;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.twiml.TwiML;
 import org.assertj.core.util.Lists;
@@ -28,10 +29,10 @@ public class PhoneCallerMock implements PhoneCaller {
             e.printStackTrace();
         }
         if (this.failedAppointmentIds.contains(callData.getAppointmentId())) {
-            callData.callEnd(Call.Status.FAILED,"22");
+            callData.callEnd(AppointmentReminderStatus.FAILED,"22");
         } else {
             callData.setUserResponse(1);
-            callData.callEnd(Call.Status.COMPLETED,"22");
+            callData.callEnd(AppointmentReminderStatus.FAILED,"22");
         }
     }
 

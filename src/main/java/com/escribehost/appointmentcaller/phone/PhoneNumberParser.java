@@ -22,7 +22,7 @@ public class PhoneNumberParser {
     public static PhoneNumberParser parse(String phoneNumber) {
         Matcher matcher = PN_PATTERN.matcher(phoneNumber);
         if (!matcher.matches())
-            throw new RuntimeException("Invalid phone number");
+            throw new WrongPhoneNumberException("Invalid phone number: " + phoneNumber);
         return new PhoneNumberParser(matcher.group("PHONE"), matcher.group("EXT"));
     }
 
