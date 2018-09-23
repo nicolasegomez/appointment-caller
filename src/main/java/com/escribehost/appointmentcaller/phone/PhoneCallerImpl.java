@@ -4,6 +4,7 @@ import com.escribehost.appointmentcaller.model.CallData;
 import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Call;
+import com.twilio.rest.api.v2010.account.CallCreator;
 import com.twilio.twiml.TwiML;
 import com.twilio.twiml.VoiceResponse;
 import com.twilio.twiml.voice.Dial;
@@ -58,7 +59,10 @@ public class PhoneCallerImpl implements PhoneCaller {
     @Override
     public void call(CallData callData) throws URISyntaxException {
         Twilio.init(twilioConfig.getAccountSid(callData.getAccountId()), twilioConfig.getToken(callData.getAccountId()));
-        String to = callData.getPhoneToCall();
+
+        PhoneNumberParser phoneNumberTo = PhoneNumberParser.parse(callData.getPhoneToCall());
+        String to = phoneNumberTo.getPhone();
+
         String callerApiUrlPath = "/call";
         if (callData.getType() == AppointmentReminderType.CONFIRMATION) {
             callerApiUrlPath += "/reminder";
@@ -66,14 +70,19 @@ public class PhoneCallerImpl implements PhoneCaller {
             callerApiUrlPath += "/cancellation";
         }
 
-        Call call = Call
+        CallCreator callCreator = Call
                 .creator(new PhoneNumber(to), new PhoneNumber(twilioConfig.getPhoneFrom(callData.getAccountId())), new URI(phoneCallerApiUrl + callerApiUrlPath))
                 .setStatusCallback(new URI(phoneCallerApiUrl + "call/status"))
-                .setRecord(true)
-                .create();
+                .setRecord(true);
+
+        if (phoneNumberTo.hasExtension()) {
+            callCreator.setSendDigits(phoneNumberTo.getExtension());
+        }
+
+        Call call = callCreator.create();
 
         currentCalls.put(call.getSid(), callData);
-        logger.info("Call started. SId:{}, AppiontmentId:{}", call.getSid(), callData.getAppointmentId());
+        logger.info("Call started. SId:{}, AppointmentId:{}", call.getSid(), callData.getAppointmentId());
     }
 
     public String getCallMessage(CallData call, String templateFileName) {

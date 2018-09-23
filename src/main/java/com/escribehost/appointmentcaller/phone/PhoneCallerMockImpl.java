@@ -18,6 +18,10 @@ public class PhoneCallerMockImpl extends PhoneCallerImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(PhoneCallerMockImpl.class);
 
+    public PhoneCallerMockImpl(TwilioConfig twilioConfig) {
+        super(twilioConfig);
+    }
+
     @Override
     public void call(CallData callData) throws URISyntaxException {
         String callSid = UUID.randomUUID().toString();
