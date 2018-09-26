@@ -136,6 +136,10 @@ public class CallData implements Serializable {
         return this;
     }
 
+    public boolean isCallFinished() {
+        return callFinished;
+    }
+
     public synchronized void waitUntilCallEnd() throws Exception {
         if (!callFinished) {
             wait(timeoutCallData);

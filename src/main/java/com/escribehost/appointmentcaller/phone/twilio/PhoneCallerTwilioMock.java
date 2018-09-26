@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.net.URISyntaxException;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -23,7 +22,7 @@ public class PhoneCallerTwilioMock extends PhoneCallerTwilio {
     }
 
     @Override
-    public void call(CallData callData) throws URISyntaxException {
+    public void call(CallData callData) {
         String callSid = UUID.randomUUID().toString();
         logger.info("DEV - Call starting {}", callSid);
         currentCalls.put(callSid, callData);

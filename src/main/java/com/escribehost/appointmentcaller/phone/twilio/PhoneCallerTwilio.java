@@ -25,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -60,35 +59,40 @@ public class PhoneCallerTwilio implements PhoneCaller {
     }
 
     @Override
-    public void call(CallData callData) throws URISyntaxException {
-        Twilio.init(twilioConfig.getAccountSid(callData.getAccountId()), twilioConfig.getToken(callData.getAccountId()));
+    public void call(CallData callData) {
+        try {
+            Twilio.init(twilioConfig.getAccountSid(callData.getAccountId()), twilioConfig.getToken(callData.getAccountId()));
 
-        PhoneNumberParser phoneNumberTo = PhoneNumberParser.parse(callData.getPhoneToCall());
-        String to = phoneNumberTo.getPhone();
+            PhoneNumberParser phoneNumberTo = PhoneNumberParser.parse(callData.getPhoneToCall());
+            String to = phoneNumberTo.getPhone();
 
-        String callerApiUrlPath = "/call";
-        if (callData.getType() == AppointmentReminderType.CONFIRMATION) {
-            callerApiUrlPath += "/reminder";
-        } else {
-            callerApiUrlPath += "/cancellation";
+            String callerApiUrlPath = "/call";
+            if (callData.getType() == AppointmentReminderType.CONFIRMATION) {
+                callerApiUrlPath += "/reminder";
+            } else {
+                callerApiUrlPath += "/cancellation";
+            }
+
+            CallCreator callCreator = Call
+                    .creator(new PhoneNumber(to), new PhoneNumber(twilioConfig.getPhoneFrom(callData.getAccountId())), new URI(phoneCallerApiUrl + callerApiUrlPath))
+                    .setStatusCallback(new URI(phoneCallerApiUrl + "call/status"))
+                    .setRecord(true);
+
+            if (phoneNumberTo.hasExtension()) {
+                callCreator.setSendDigits(phoneNumberTo.getExtension());
+            }
+
+            Call call = callCreator.create();
+
+            currentCalls.put(call.getSid(), callData);
+            logger.info("Call started. SId:{}, AppointmentId:{}", call.getSid(), callData.getAppointmentId());
+        } catch (Exception ex) {
+            logger.error("Call failed! AppointmentId: " + callData.getAppointmentId(), ex);
+            callData.callEnd(AppointmentReminderStatus.FAILED, null);
         }
-
-        CallCreator callCreator = Call
-                .creator(new PhoneNumber(to), new PhoneNumber(twilioConfig.getPhoneFrom(callData.getAccountId())), new URI(phoneCallerApiUrl + callerApiUrlPath))
-                .setStatusCallback(new URI(phoneCallerApiUrl + "call/status"))
-                .setRecord(true);
-
-        if (phoneNumberTo.hasExtension()) {
-            callCreator.setSendDigits(phoneNumberTo.getExtension());
-        }
-
-        Call call = callCreator.create();
-
-        currentCalls.put(call.getSid(), callData);
-        logger.info("Call started. SId:{}, AppointmentId:{}", call.getSid(), callData.getAppointmentId());
     }
 
-    public String getCallMessage(CallData call, String templateFileName) {
+    protected String getCallMessage(CallData call, String templateFileName) {
         String appointmentInfo = "";
         if (call.getProvider() != null)
             appointmentInfo += " with the doctor " + call.getProvider();
@@ -175,14 +179,12 @@ public class PhoneCallerTwilio implements PhoneCaller {
                     case "1":
                         call.setUserResponse(Integer.parseInt(digits));
                         builder.say(new Say.Builder(getCallMessage(call, "templates/reminder-confirm.twig")).build());
-                        currentCalls.remove(callSid);
                         logger.info("Patient confirmed appointment. SId:{}, AppointmentId:{}", callSid, call.getAppointmentId());
                         break;
                     case "2":
                         call.setUserResponse(Integer.parseInt(digits));
                         builder.say(new Say.Builder(getCallMessage(call, "templates/cancel.twig")).build());
                         builder.dial(new Dial.Builder(supportPhone).build());
-                        currentCalls.remove(callSid);
                         logger.info("Patient requested for support in appointment. SId:{}, AppointmentId:{}", callSid, call.getAppointmentId());
                         break;
                     default:
@@ -252,6 +254,7 @@ public class PhoneCallerTwilio implements PhoneCaller {
             CallData call = currentCalls.get(callSid);
             if (call != null) {
                 call.callEnd(getAppointmentReminderStatus(callStatus), callSid);
+                currentCalls.remove(callSid);
             } else
                 logger.error("Can't handle call status because the Call doesn't exists. SId:{}", callSid);
         }

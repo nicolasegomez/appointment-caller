@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
 
 public interface PhoneCaller {
 
-    void call(CallData callData) throws URISyntaxException;
+    void call(CallData callData);
 
     TwiML getReminderWelcomeDialog(String callSid);
 
@@ -17,8 +17,6 @@ public interface PhoneCaller {
     TwiML handleReminderResponse(String callSid, String digits);
 
     TwiML handleCancellationResponse(String callSid, String digits);
-
-    String getCallMessage(CallData call, String templateFileName);
 
     void removeCall(CallData callData);
 
