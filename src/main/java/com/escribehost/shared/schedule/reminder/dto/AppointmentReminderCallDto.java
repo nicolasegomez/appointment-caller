@@ -19,7 +19,7 @@ public class AppointmentReminderCallDto {
     private String providerLastName;
     private AppointmentReminderType type;
     private String callId;
-    private int attemptNumber=1;
+    private int attemptNumber = 1;
 
     public Long getAppointmentReminderId() {
         return appointmentReminderId;

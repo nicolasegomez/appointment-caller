@@ -4,8 +4,6 @@ import com.escribehost.appointmentcaller.model.CallData;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.twiml.TwiML;
 
-import java.net.URISyntaxException;
-
 public interface PhoneCaller {
 
     void call(CallData callData);

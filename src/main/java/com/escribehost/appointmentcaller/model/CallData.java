@@ -1,11 +1,13 @@
 package com.escribehost.appointmentcaller.model;
 
-import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
-import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
-import org.springframework.beans.factory.annotation.Value;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
+
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
+import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderType;
 
 public class CallData implements Serializable {
     @Value("${call.timeout:10000}")

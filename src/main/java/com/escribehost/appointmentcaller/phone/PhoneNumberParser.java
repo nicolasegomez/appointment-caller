@@ -1,9 +1,9 @@
 package com.escribehost.appointmentcaller.phone;
 
-import org.springframework.util.StringUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.springframework.util.StringUtils;
 
 public class PhoneNumberParser {
 
@@ -13,16 +13,18 @@ public class PhoneNumberParser {
     private String extension;
 
     public PhoneNumberParser(String phone, String extension) {
-        if (StringUtils.isEmpty(phone))
+        if (StringUtils.isEmpty(phone)) {
             throw new RuntimeException("Invalid phone number");
+        }
         this.phone = phone;
         this.extension = extension;
     }
 
     public static PhoneNumberParser parse(String phoneNumber) {
         Matcher matcher = PN_PATTERN.matcher(phoneNumber);
-        if (!matcher.matches())
+        if (!matcher.matches()) {
             throw new WrongPhoneNumberException("Invalid phone number: " + phoneNumber);
+        }
         return new PhoneNumberParser(matcher.group("PHONE"), matcher.group("EXT"));
     }
 

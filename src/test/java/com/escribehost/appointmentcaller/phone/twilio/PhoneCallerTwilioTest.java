@@ -1,14 +1,15 @@
 package com.escribehost.appointmentcaller.phone.twilio;
 
+import java.util.Date;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.escribehost.appointmentcaller.model.CallData;
 import com.escribehost.shared.schedule.reminder.dto.AppointmentReminderStatus;
 import com.twilio.rest.api.v2010.account.Call;
 import com.twilio.twiml.TwiML;
 import com.twilio.twiml.voice.Say;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

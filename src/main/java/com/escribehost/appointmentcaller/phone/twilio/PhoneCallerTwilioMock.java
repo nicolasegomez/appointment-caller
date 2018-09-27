@@ -1,15 +1,16 @@
 package com.escribehost.appointmentcaller.phone.twilio;
 
-import com.escribehost.appointmentcaller.model.CallData;
-import com.twilio.rest.api.v2010.account.Call;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
+import com.escribehost.appointmentcaller.model.CallData;
+import com.twilio.rest.api.v2010.account.Call;
 
 @Component
 @Profile("dev")

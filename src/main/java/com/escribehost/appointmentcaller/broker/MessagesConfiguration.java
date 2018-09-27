@@ -1,8 +1,15 @@
 package com.escribehost.appointmentcaller.broker;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -13,9 +20,6 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ErrorHandler;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 @Configuration
 @EnableRabbit
@@ -73,23 +77,6 @@ public class MessagesConfiguration {
         return new ConditionalRejectingErrorHandler(new MessagesConfiguration.AppointmentReminderExceptionStrategy());
     }
 
-    public static class AppointmentReminderExceptionStrategy
-            extends ConditionalRejectingErrorHandler.DefaultExceptionStrategy {
-        private final Logger logger = LoggerFactory.getLogger(APPOINTMENT_REMINDER_BROKER_ERRORS);
-
-        @Override
-        public boolean isFatal(Throwable t) {
-            if (t instanceof ListenerExecutionFailedException) {
-                // TODO: should we do something more ? send email, add some admin notification .... ELK?
-                ListenerExecutionFailedException ex = (ListenerExecutionFailedException) t;
-                logger.error("Failed to receive and start AppointmentReminder call from "
-                        + ex.getFailedMessage().getMessageProperties().getConsumerQueue(), t);
-                return true;
-            }
-            return super.isFatal(t);
-        }
-    }
-
     @Bean
     DirectExchange appointmentReminderExchange() {
         return new DirectExchange(rbp.getAppointmentReminderExchange(), true, false);
@@ -104,19 +91,20 @@ public class MessagesConfiguration {
     }
 
     @Bean
-    Binding appointmentReminderExchangeBinding(DirectExchange appointmentReminderExchange, Queue appointmentReminderQueue) {
+    Binding appointmentReminderExchangeBinding(DirectExchange appointmentReminderExchange,
+                                               Queue appointmentReminderQueue) {
         return BindingBuilder
                 .bind(appointmentReminderQueue)
                 .to(appointmentReminderExchange)
                 .with(rbp.getAppointmentReminderRoutingKey());
     }
 
-    // dead letter messages
-
     @Bean
     DirectExchange appointmentReminderDeadLetterExchange() {
         return new DirectExchange(rbp.getAppointmentReminderDeadLetterExchange(), true, false);
     }
+
+    // dead letter messages
 
     @Bean
     Queue appointmentReminderDeadLetterQueue() {
@@ -134,8 +122,6 @@ public class MessagesConfiguration {
                 .with(rbp.getAppointmentReminderRoutingKey());
     }
 
-    //status queue
-
     @Bean
     public RabbitTemplate appointmentReminderStatusRabbitTemplate(ConnectionFactory rabbitConnectionFactory,
                                                                   RabbitBrokerProperties rabbitBrokerProperties) {
@@ -145,6 +131,8 @@ public class MessagesConfiguration {
         r.setMessageConverter(producerJackson2JsonMessageConverter());
         return r;
     }
+
+    // status queue
 
     @Bean
     DirectExchange appointmentReminderStatusExchange() {
@@ -159,19 +147,20 @@ public class MessagesConfiguration {
     }
 
     @Bean
-    Binding appointmentReminderStatusExchangeBinding(DirectExchange appointmentReminderStatusExchange, Queue appointmentReminderStatusQueue) {
+    Binding appointmentReminderStatusExchangeBinding(DirectExchange appointmentReminderStatusExchange,
+                                                     Queue appointmentReminderStatusQueue) {
         return BindingBuilder
                 .bind(appointmentReminderStatusQueue)
                 .to(appointmentReminderStatusExchange)
                 .with(rbp.getAppointmentReminderStatusRoutingKey());
     }
 
-    // dead letter messages
-
     @Bean
     DirectExchange appointmentReminderStatusDeadLetterExchange() {
         return new DirectExchange(rbp.getAppointmentReminderStatusDeadLetterExchange(), true, false);
     }
+
+    // dead letter messages
 
     @Bean
     Queue appointmentReminderStatusDeadLetterQueue() {
@@ -189,5 +178,21 @@ public class MessagesConfiguration {
                 .with(rbp.getAppointmentReminderStatusRoutingKey());
     }
 
+    public static class AppointmentReminderExceptionStrategy
+            extends ConditionalRejectingErrorHandler.DefaultExceptionStrategy {
+        private final Logger logger = LoggerFactory.getLogger(APPOINTMENT_REMINDER_BROKER_ERRORS);
+
+        @Override
+        public boolean isFatal(Throwable t) {
+            if (t instanceof ListenerExecutionFailedException) {
+                // TODO: should we do something more ? send email, add some admin notification .... ELK?
+                ListenerExecutionFailedException ex = (ListenerExecutionFailedException) t;
+                logger.error("Failed to receive and start AppointmentReminder call from "
+                        + ex.getFailedMessage().getMessageProperties().getConsumerQueue(), t);
+                return true;
+            }
+            return super.isFatal(t);
+        }
+    }
 
 }

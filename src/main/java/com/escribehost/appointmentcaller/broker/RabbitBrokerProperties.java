@@ -16,7 +16,8 @@ public class RabbitBrokerProperties {
     private final String appointmentReminderStatusExchange = "appointment.reminder.status.exchange";
     private final String appointmentReminderStatusQueue = "appointment.reminder.status.queue";
     private final String appointmentReminderStatusRoutingKey = "appointment.reminder.status.routing.key";
-    private final String appointmentReminderStatusDeadLetterExchange = "appointment.reminder.status.dead.letter.exchange";
+    private final String appointmentReminderStatusDeadLetterExchange = "appointment.reminder.status.dead.letter" +
+            ".exchange";
     private final String appointmentReminderStatusDeadLetterQueue = "appointment.reminder.status.dead.letter.queue";
 
     private String prefix = "";
