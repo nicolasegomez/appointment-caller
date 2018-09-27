@@ -33,6 +33,16 @@ public class MessagesConfiguration {
     }
 
     @Bean
+    public RabbitTemplate appointmentReminderRabbitTemplate(ConnectionFactory rabbitConnectionFactory,
+                                                            RabbitBrokerProperties rabbitBrokerProperties) {
+        RabbitTemplate r = new RabbitTemplate(rabbitConnectionFactory);
+        r.setExchange(rabbitBrokerProperties.getAppointmentReminderExchange());
+        r.setRoutingKey(rabbitBrokerProperties.getAppointmentReminderRoutingKey());
+        r.setMessageConverter(producerJackson2JsonMessageConverter());
+        return r;
+    }
+
+    @Bean
     public SimpleRabbitListenerContainerFactory appointmentReminderSubscriberContainerFactory(
             ConnectionFactory rabbitConnectionFactory,
             RabbitBrokerProperties rbp) {
