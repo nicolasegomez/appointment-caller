@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://users.tpg.com.au/ojburn/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+
+    <!-- Suppress javadoc for files not under core -->
+    <suppress checks="Javadoc.*" files="^(?!.*com[/\\]escribehost[/\\]core[/\\]).*"/>
+
+    <!-- Suppress files under target -->
+    <suppress checks=".*" files=".*[/\\]target[/\\].*"/>
+
+    <!-- Suppress method naming under test -->
+    <suppress checks="MethodName" files=".*[/\\]test[/\\].*"/>
+    <suppress checks="MethodName" files=".*[/\\]commontest[/\\].*"/>
+
+    <!-- Suppress files under com/google -->
+    <suppress checks=".*" files="com[/\\]google[/\\]"/>
+
+    <suppress checks=".*" files=".*\.png"/>
+    <suppress checks=".*" files=".*\.ui.xml"/>
+    <suppress checks=".*" files=".*\.css"/>
+    <suppress checks=".*" files=".*\.eot"/>
+    <suppress checks=".*" files=".*\.svg"/>
+    <suppress checks=".*" files=".*\.ttf"/>
+    <suppress checks=".*" files=".*\.woff"/>
+
+</suppressions>
